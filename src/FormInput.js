@@ -2,16 +2,18 @@ import { useState } from "react";
 import List from "./list-todo";
 
 export default function FormInput() {
-  let listid = 1111;
+  const [listid, setlistid] = useState(11);
   const [todo, setTodo] = useState([]);
   //   const [checked, setChecked] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let addtodo = e.target.todo.value;
-    setTodo((prev) => [{ name: addtodo, id: listid++ }, ...prev]);
-    e.target.todo.value = "";
+    setlistid((p) => p + 1);
     console.log(listid);
+    let addtodo = e.target.todo.value;
+    setTodo((prev) => [{ name: addtodo, id: listid }, ...prev]);
+    e.target.todo.value = "";
+    console.log(todo[0].id);
   };
 
   return (
