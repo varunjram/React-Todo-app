@@ -24,7 +24,7 @@ ul {
 
 .todo-list {
   display: flex;
-  justify-content: start;
+  justify-content: flex-startnpm;
 }
 .todo-list > input {
   margin-right: 5rem;
