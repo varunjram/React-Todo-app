@@ -1,20 +1,57 @@
 import { useState } from "react";
 import List from "./list-todo";
 
-export default function FormInput() {
+export default function FormInput({ filterkey }) {
   const [listid, setlistid] = useState(11);
-  const [todo, setTodo] = useState([]);
-  //   const [checked, setChecked] = useState(false);
+  const [todo, setTodo] = useState([
+    { name: "1", id: 1 },
+    { name: "2", id: 2 },
+    { name: "3", id: 3 },
+    { name: "4", id: 4 },
+    { name: "5", id: 5 },
+    { name: "6", id: 6 },
+  ]);
+
+  console.log(filterkey);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setlistid((p) => p + 1);
-    console.log(listid);
     let addtodo = e.target.todo.value;
     setTodo((prev) => [{ name: addtodo, id: listid }, ...prev]);
     e.target.todo.value = "";
-    console.log(todo[0].id);
   };
+
+  const display = (filteredTodo) =>
+    filteredTodo.map((todo) => (
+      <List
+        todo={todo.name}
+        key={todo.id}
+        id={todo.id}
+        checked={todo.checked}
+        atToggle={atToggle}
+      />
+    ));
+  let active = todo.filter((task) => !task.checked);
+  let completed = todo.filter((task) => task.checked);
+
+  const filtereddisplay = (filterkey) => {
+    if (filterkey === "all") {
+      return display(todo);
+    } else if (filterkey === "active") {
+      return display(active);
+    } else return display(completed);
+  };
+
+  function atToggle(id) {
+    setTodo(
+      todo.map((task) =>
+        task.id === id ? { ...task, checked: !task.checked } : task
+      )
+    );
+  }
+
+  console.log(todo);
 
   return (
     <div>
@@ -23,11 +60,8 @@ export default function FormInput() {
         <input type="text" id="todo" />
         <button type="submit">Add</button>
       </form>
-      <ul>
-        {todo.map((todo, index) => (
-          <List todo={todo.name} key={todo.id} />
-        ))}
-      </ul>
+      {/* <ul>{display(todo)}</ul> */}
+      <ul>{filtereddisplay(filterkey)}</ul>
     </div>
   );
 }
